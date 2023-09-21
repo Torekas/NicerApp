@@ -9,26 +9,41 @@
         <li class="nav-item">
           <a class="nav-link {{ 'active' if active_menu == 'home' }}" aria-current="page" href="{{ url_for('index') }}">Home</a>
         </li>
+        {% if login.is_valid %}
         <li class="nav-item">
           <a class="nav-link {{ 'active' if active_menu == 'exchange' }}" href="{{ url_for('exchange') }}">Exchange</a>
         </li>
+        {% endif %}
+        {% if login.is_valid %}
         <li class="nav-item">
           <a class="nav-link {{ 'active' if active_menu == 'history' }}" href="{{ url_for('history') }}">History</a>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link {{ 'active' if active_menu == 'about' }}" href="#">About</a>
         </li>
+        {% if not login.is_valid %}
+        <li class="nav-item">
+          <a class="nav-link {{ 'active' if active_menu == 'login' }}" href="{{ url_for('login') }}">Login</a>
+        </li>
+        {% endif %}
+        {% if login.is_valid %}
+        <li class="nav-item">
+          <a class="nav-link {{ 'active' if active_menu == 'logout' }}" href="{{ url_for('logout') }}">Logout {{ session['user']
+           if 'user' in session }} </a>
+        </li>
+        {% endif %}
+        {% if login.is_valid and login.is_admin %}
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Dropdown
+            Users
           </a>
           <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Action</a></li>
-            <li><a class="dropdown-item" href="#">Another action</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Something else here</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('users') }}">Users</a></li>
+            <li><a class="dropdown-item" href="{{ url_for('new_user') }}">New User</a></li>
           </ul>
         </li>
+        {% endif %}
         <li class="nav-item">
           <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
         </li>
